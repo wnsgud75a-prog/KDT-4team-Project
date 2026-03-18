@@ -1,0 +1,79 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrendBridge | 매칭 분석</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body data-page="매칭 분석">
+  <header class="site-header">
+    <div class="topbar">
+      <a class="brand" href="index.html">TrendBridge</a>
+      <nav class="nav">
+        <a href="index.html" data-page="jobs">공고 보기</a>
+        <a href="jobs.html" data-page="dashboard">트렌드 차트</a>
+        <a href="matching.html" data-page="matching">매칭 분석</a>
+        <a href="profile.html" data-page="profile">프로필</a>
+      </nav>
+      <div id="authArea" class="auth-area"><a class="auth-btn secondary" href="login.html">로그인</a><a class="auth-btn" href="signup.html">회원가입</a></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>매칭 분석</h1>
+      <p>목표 공고를 선택하면 해당 공고 요구 스택 기준으로 매칭 지수와 부족 역량을 계산합니다.</p>
+    </section>
+
+    <section class="grid two">
+      <article class="card">
+        <h2>목표 공고 기반 매칭</h2>
+        <div class="row" style="margin-bottom:10px">
+          <select id="role" class="role-select"></select>
+          <select id="targetJob"></select>
+        </div>
+        <p id="jobMeta" class="muted">직무를 선택하면 공고 목록이 표시됩니다.</p>
+
+        <div class="row" style="margin-top:8px">
+          <input id="stackInput" type="text" placeholder="보유 스택 입력" />
+          <button id="addStack" type="button" class="secondary">추가</button>
+          <button id="calcMatch" type="button">지수 계산</button>
+        </div>
+
+        <h3 style="margin-top:14px">내 보유 스택</h3>
+        <div id="myStacks" class="taglist"></div>
+
+        <h3 style="margin-top:14px">공고 기준 갭 분석</h3>
+        <p class="muted" style="margin:0 0 6px">보유</p>
+        <div id="haveStacks" class="taglist"></div>
+        <p class="muted" style="margin:10px 0 6px">부족</p>
+        <div id="missingStacks" class="taglist"></div>
+      </article>
+
+      <article class="card">
+        <h3>결과</h3>
+        <div id="matchScore" class="score">--%</div>
+        <p id="matchSuggest" class="muted">목표 공고를 선택하고 지수 계산을 실행하세요.</p>
+
+        <h3 style="margin-top:14px">점수 개선 시뮬레이션</h3>
+        <div class="row">
+          <select id="boostStack"></select>
+          <button id="simulateBtn" type="button" class="secondary">예상 점수 보기</button>
+        </div>
+        <p id="simulateResult" class="muted" style="margin-top:8px">부족 스택이 있을 때 시뮬레이션이 가능합니다.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
+
+
+
+
+
+
+
