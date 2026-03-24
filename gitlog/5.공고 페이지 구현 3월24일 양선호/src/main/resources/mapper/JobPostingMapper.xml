@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.mvcgithublogin.repository.JobPostingRepository">
+
+    <resultMap id="jobPostingResultMap" type="com.project.mvcgithublogin.domain.JobPosting">
+        <id property="postingId" column="POSTING_ID"/>
+        <result property="companyName" column="COMPANY_NAME"/>
+        <result property="postedDate" column="POSTED_DATE"/>
+        <result property="deadline" column="DEADLINE"/>
+        <result property="region" column="REGION"/>
+        <result property="employmentType" column="EMPLOYMENT_TYPE"/>
+        <result property="education" column="EDUCATION"/>
+        <result property="jobPosition" column="JOB_POSITION"/>
+        <result property="techStack" column="TECH_STACK"/>
+        <result property="salary" column="SALARY"/>
+        <result property="postingUrl" column="POSTING_URL"/>
+    </resultMap>
+
+    <select id="countByCategoryId" resultType="int">
+        SELECT COUNT(*)
+        FROM JOB_POSTING_CATEGORY
+        WHERE CATEGORY_ID = #{categoryId}
+    </select>
+
+    <select id="findByCategoryIdWithPaging" resultMap="jobPostingResultMap">
+        SELECT *
+        FROM (
+                 SELECT
+                     ROW_NUMBER() OVER (ORDER BY jp.POSTED_DATE DESC, jp.POSTING_ID DESC) AS RN,
+                     jp.POSTING_ID,
+                     jp.COMPANY_NAME,
+                     jp.POSTED_DATE,
+                     jp.DEADLINE,
+                     jp.REGION,
+                     jp.EMPLOYMENT_TYPE,
+                     jp.EDUCATION,
+                     jp.JOB_POSITION,
+                     jp.TECH_STACK,
+                     jp.SALARY,
+                     jp.POSTING_URL
+                 FROM JOB_POSTING jp
+                          INNER JOIN JOB_POSTING_CATEGORY jpc
+                                     ON jp.POSTING_ID = jpc.POSTING_ID
+                 WHERE jpc.CATEGORY_ID = #{categoryId}
+             )
+        WHERE RN BETWEEN #{startRow} AND #{endRow}
+    </select>
+
+</mapper>

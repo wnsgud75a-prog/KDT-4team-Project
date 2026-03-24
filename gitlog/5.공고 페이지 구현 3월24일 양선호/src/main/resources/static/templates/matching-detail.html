@@ -1,0 +1,52 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrendBridge | 매칭 분석 세부 설정</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body data-page="matching-detail">
+  <header class="site-header">
+    <div class="topbar">
+      <a class="brand" href="index.html">TrendBridge</a>
+      <nav class="nav">
+        <a href="index.html" data-page="jobs">공고 보기</a>
+        <a href="jobs.html" data-page="dashboard">트렌드 차트</a>
+        <a href="matching.html" data-page="matching">매칭 분석</a>
+        
+      </nav>
+      <div id="authArea" class="auth-area"><a class="auth-btn secondary" href="login.html">로그인</a><a class="auth-btn" href="signup.html">회원가입</a></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>세부 설정</h1>
+      <p>대분류와 소분류를 선택해 맞춤 회사를 확인합니다.</p>
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <div class="row" style="margin-bottom:12px">
+        <select id="majorCategory"></select>
+        <select id="minorCategory"></select>
+        <button id="applyCategory" type="button" class="secondary">적용</button>
+      </div>
+      <div>
+        <h3 style="margin:0 0 8px">추천 회사</h3>
+        <div id="companyList" class="list"></div>
+      </div>
+      <div style="margin-top:14px">
+        <a class="auth-btn secondary" href="matching.html">매칭 분석으로 돌아가기</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/theme.js" defer></script>
+  <script src="/js/auth.js" defer></script>
+  <script src="/js/matching-detail.js" defer></script>
+</body>
+</html>

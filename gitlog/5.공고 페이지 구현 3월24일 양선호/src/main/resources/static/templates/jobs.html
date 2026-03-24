@@ -1,0 +1,73 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrendBridge | 트렌드 차트</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body data-page="dashboard">
+  <header class="site-header">
+    <div class="topbar">
+      <a class="brand" href="index.html">TrendBridge</a>
+      <nav class="nav">
+        <a href="index.html" data-page="jobs">공고 보기</a>
+        <a href="jobs.html" data-page="dashboard">트렌드 차트</a>
+        <a href="matching.html" data-page="matching">매칭 분석</a>
+        
+      </nav>
+      <div id="authArea" class="auth-area"><a class="auth-btn secondary" href="login.html">로그인</a><a class="auth-btn" href="signup.html">회원가입</a></div>
+    </div>
+  </header>
+
+
+  <main class="container">
+    <section class="hero">
+      <h1>트렌드 차트</h1>
+      <p>더미 데이터를 기준으로 직무별 기술 스택 TOP10과 보조 인사이트를 확인합니다.</p>
+    </section>
+
+    <section class="grid two" style="margin-top:18px;">
+      <div class="card">
+        <div class="row" style="justify-content:space-between; gap:12px; align-items:center;">
+          <h2 style="margin:0;">트렌드 조회</h2>
+          <div class="row" style="gap:8px; flex-wrap:wrap; justify-content:flex-end;">
+            <span class="muted" style="font-size:13px;">기간 : </span>
+            <td>2025.10.01 ~ 2025.11.01</td>
+          </div>
+        </div>
+        <div class="tabs" id="trendCategoryTabs" style="margin-top:12px;">
+          <button class="tab-btn active" type="button" data-category="backend">백엔드</button>
+          <button class="tab-btn" type="button" data-category="frontend">프론트엔드</button>
+          <button class="tab-btn" type="button" data-category="ai-data">인공지능/데이터</button>
+          <button class="tab-btn" type="button" data-category="infra">인프라</button>
+        </div>
+        <div id="trendTop10List" class="list"></div>
+      </div>
+
+      <div class="card">
+        <h2>보조 인사이트</h2>
+        <div class="tabs" id="insightTabs">
+          <button class="tab-btn active" data-tab="new">ㅇㅇ</button>
+          <button class="tab-btn" data-tab="down">ㅇㅇ</button>
+          <button class="tab-btn" data-tab="sector">ㅇㅇ</button>
+        </div>
+        <div id="insightContent" class="list" style="margin-top:12px;"></div>
+      </div>
+    </section>
+  </main>
+  <script src="/js/theme.js" defer></script>
+  <script src="/js/auth.js" defer></script>
+  <script src="/js/tabs.js" defer></script>
+</body>
+</html>
+
+
+
+
+
+
+
