@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.mvcgithublogin.repository.JobPostingRepository">
+
+    <resultMap id="jobPostingResultMap" type="com.project.mvcgithublogin.domain.JobPosting">
+        <id property="postingId" column="POSTING_ID" jdbcType="BIGINT"/>
+        <result property="companyName" column="COMPANY_NAME" jdbcType="VARCHAR"/>
+        <result property="postedDate" column="POSTED_DATE" jdbcType="VARCHAR"/>
+        <result property="deadline" column="DEADLINE" jdbcType="VARCHAR"/>
+        <result property="region" column="REGION" jdbcType="VARCHAR"/>
+        <result property="employmentType" column="EMPLOYMENT_TYPE" jdbcType="VARCHAR"/>
+        <result property="education" column="EDUCATION" jdbcType="VARCHAR"/>
+        <result property="jobPosition" column="JOB_POSITION" jdbcType="VARCHAR"/>
+        <result property="techStack" column="TECH_STACK" jdbcType="VARCHAR"/>
+        <result property="salary" column="SALARY" jdbcType="VARCHAR"/>
+        <result property="postingUrl" column="POSTING_URL" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="jobPostingResultMap">
+        SELECT
+            POSTING_ID,
+            COMPANY_NAME,
+            TO_CHAR(POSTED_DATE, 'YYYY-MM-DD') AS POSTED_DATE,
+            TO_CHAR(DEADLINE, 'YYYY-MM-DD') AS DEADLINE,
+            REGION,
+            EMPLOYMENT_TYPE,
+            EDUCATION,
+            JOB_POSITION,
+            TECH_STACK,
+            SALARY,
+            POSTING_URL
+        FROM JOB_POSTING
+        ORDER BY POSTING_ID DESC
+    </select>
+
+    <select id="findCompanyNames" resultType="string">
+        SELECT DISTINCT COMPANY_NAME
+        FROM JOB_POSTING
+        ORDER BY COMPANY_NAME
+    </select>
+
+    <select id="countByCategoryId" resultType="int">
+        SELECT COUNT(*)
+        FROM JOB_POSTING_CATEGORY
+        WHERE CATEGORY_ID = #{categoryId}
+    </select>
+
+    <select id="findByCategoryIdWithPaging" resultMap="jobPostingResultMap">
+        SELECT *
+        FROM (
+                 SELECT
+                     ROW_NUMBER() OVER (ORDER BY jp.POSTED_DATE DESC, jp.POSTING_ID DESC) AS RN,
+                     jp.POSTING_ID,
+                     jp.COMPANY_NAME,
+                     TO_CHAR(jp.POSTED_DATE, 'YYYY-MM-DD') AS POSTED_DATE,
+                     TO_CHAR(jp.DEADLINE, 'YYYY-MM-DD') AS DEADLINE,
+                     jp.REGION,
+                     jp.EMPLOYMENT_TYPE,
+                     jp.EDUCATION,
+                     jp.JOB_POSITION,
+                     jp.TECH_STACK,
+                     jp.SALARY,
+                     jp.POSTING_URL
+                 FROM JOB_POSTING jp
+                          INNER JOIN JOB_POSTING_CATEGORY jpc
+                                     ON jp.POSTING_ID = jpc.POSTING_ID
+                 WHERE jpc.CATEGORY_ID = #{categoryId}
+             )
+        WHERE RN BETWEEN #{startRow} AND #{endRow}
+    </select>
+</mapper>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrendBridge | 프로필 수정</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css" th:href="@{/css/styles.css}" />
+</head>
+<body data-page="profile-edit" data-protected="true">
+  <header class="site-header">
+    <div class="topbar">
+      <a class="brand" href="/" th:href="@{/}">TrendBridge</a>
+      <nav class="nav">
+        <a href="/" th:href="@{/}" data-page="jobs">공고 보기</a>
+        <a href="/jobs" th:href="@{/jobs}" data-page="dashboard">트렌드 차트</a>
+        <a href="/matching" th:href="@{/matching}" data-page="matching">매칭 분석</a>
+        <a href="/profile" th:href="@{/profile}" data-page="profile">프로필</a>
+      </nav>
+      <div id="themeArea" class="theme-area">
+        <button class="auth-btn secondary" type="button" data-theme-toggle>다크 모드</button>
+      </div>
+      <div id="authArea" class="auth-area">
+        <button class="auth-btn secondary" type="button" data-theme-toggle>다크 모드</button>
+        <a class="auth-btn secondary" href="/login" th:href="@{/login}">로그인</a>
+        <a class="auth-btn" href="/signup" th:href="@{/signup}">회원가입</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>프로필 수정</h1>
+      <p>닉네임, 자기소개, 비밀번호 및 보유 기술 스택을 수정할 수 있습니다.</p>
+    </section>
+
+    <section class="card profile-edit-card" style="margin-top:16px">
+      <div class="profile-edit-header">
+        <h2>정보 수정</h2>
+      </div>
+      <div class="list" style="gap:12px;">
+        <div class="row">
+          <label class="muted" for="profileId">로그인 ID</label>
+          <input id="profileId" type="text" readonly th:value="${session.loginUser}" value="로그인 아이디" style="min-width:220px;" />
+        </div>
+        <div class="row">
+          <label class="muted" for="profileNewPw">새 비밀번호</label>
+          <input id="profileNewPw" type="password" placeholder="변경 시에만 입력" style="min-width:220px;" />
+        </div>
+        <div class="row">
+          <label class="muted" for="profileNickname">닉네임</label>
+          <input id="profileNickname" type="text" placeholder="닉네임" style="min-width:260px;" />
+        </div>
+        <div class="row">
+          <label class="muted" for="profileIntro">자기소개</label>
+          <textarea id="profileIntro" rows="3" placeholder="간단한 소개를 입력하세요." style="min-width:320px;"></textarea>
+        </div>
+      </div>
+
+      <div class="list" style="gap:12px; margin-top:14px;">
+        <h2 style="margin:0;">보유 기술 스택 수정</h2>
+        <div class="row">
+          <input id="profileStackInput" type="text" placeholder="기술 스택 입력 (예: Java, Spring)" />
+          <button id="profileStackAdd" type="button" class="secondary">추가</button>
+        </div>
+        <div id="profileStacks" class="taglist" style="margin-top:4px;"></div>
+        <div class="row profile-edit-actions">
+          <button id="profileSaveAllBtn" type="button">수정 완료</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/theme.js" th:src="@{/js/theme.js}" defer></script>
+  <script src="/js/auth.js" th:src="@{/js/auth.js}" defer></script>
+  <script src="/js/profile-edit.js?v=2" th:src="@{/js/profile-edit.js?v=2}" defer></script>
+</body>
+</html>
