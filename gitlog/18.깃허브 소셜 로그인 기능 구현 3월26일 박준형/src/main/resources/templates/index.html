@@ -1,0 +1,56 @@
+﻿<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrendBridge | 공고 보기</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css" th:href="@{/css/styles.css}" />
+</head>
+<body data-page="공고 보기">
+<header class="site-header">
+  <div class="topbar">
+    <a class="brand" href="/" th:href="@{/}">TrendBridge</a>
+    <nav class="nav">
+      <a href="/" th:href="@{/}" data-page="jobs">공고 보기</a>
+      <a href="/jobs" th:href="@{/jobs}" data-page="dashboard">트렌드 차트</a>
+      <a href="/matching" th:href="@{/matching}" data-page="matching">매칭 분석</a>
+      <a href="/profile" th:href="@{/profile}" data-page="profile">프로필</a>
+    </nav>
+    <div id="themeArea" class="theme-area"><button class="auth-btn secondary" type="button" data-theme-toggle>다크 모드</button></div>
+    <div id="authArea" class="auth-area">
+      <a class="auth-btn secondary" href="/login" th:href="@{/login}">로그인</a>
+      <a class="auth-btn" href="/signup" th:href="@{/signup}">회원가입</a>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <h1>공고 보기</h1>
+    <p>특정 기술 스택 중심으로 공고를 빠르게 추려서 바로 탐색할 수 있습니다.</p>
+  </section>
+
+  <section class="card" style="margin-top:16px">
+    <h2>공고</h2>
+
+    <div class="tabs" id="jobCategoryTabs" style="margin-bottom:12px;">
+      <button type="button" class="tab-btn active" data-category-id="2">백엔드</button>
+      <button type="button" class="tab-btn" data-category-id="1">프론트엔드</button>
+      <button type="button" class="tab-btn" data-category-id="3">인공지능/데이터</button>
+      <button type="button" class="tab-btn" data-category-id="4">인프라/보안</button>
+      <button type="button" class="tab-btn" data-category-id="5">모바일</button>
+    </div>
+
+    <div id="jobList" class="list"></div>
+    <div id="pagination" class="pagination" style="margin-top:16px;"></div>
+  </section>
+</main>
+
+<script src="/js/theme.js" th:src="@{/js/theme.js}" defer></script>
+<script src="/js/auth.js" th:src="@{/js/auth.js}" defer></script>
+<script src="/js/jobs.js" th:src="@{/js/jobs.js}" defer></script>
+</body>
+</html>

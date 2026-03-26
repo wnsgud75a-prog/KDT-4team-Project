@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- STACK_NAME(기술스택) 추가 -->
+<mapper namespace="com.project.mvcgithublogin.repository.UserRepository">
+    <!--9번,10번줄 insert into 부분에 STACK_NAME 추가-->
+    <insert id="save" parameterType="com.project.mvcgithublogin.domain.User">
+        INSERT INTO USERS (USER_ID, ID, PW, NICKNAME, STACK_NAME, LOGIN_TYPE, AUTH_KEY)
+        <!-- (수정) : 구글 신규 로그인처럼 stackName이 null일 수 있는 경우를 위해 JDBC 타입을 명시해 Oracle null 바인딩 오류 해결 -->
+        VALUES (SEQ_USERS.NEXTVAL, #{id}, #{pw}, #{nickname}, #{stackName,jdbcType=VARCHAR}, #{loginType}, #{authKey})
+    </insert>
+
+    <!--21번줄 resultMap에 property = stackName, column= stack_name, javaType = varchar 추가-->
+    <resultMap id="userResultMap" type="com.project.mvcgithublogin.domain.User">
+        <id property="userId" column="USER_ID" jdbcType="BIGINT"/>
+        <result property="id" column="ID" jdbcType="VARCHAR"/>
+        <result property="pw" column="PW" jdbcType="VARCHAR"/>
+        <result property="nickname" column="NICKNAME" jdbcType="VARCHAR"/>
+        <result property="stackName" column="STACK_NAME" jdbcType="VARCHAR"/>
+        <result property="loginType" column="LOGIN_TYPE" jdbcType="VARCHAR"/>
+        <result property="authKey" column="AUTH_KEY" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--26번줄 SQL문에 select에서 기술스택도 확인하도록 stack_name 컬럼 추가-->
+    <select id="find" resultMap="userResultMap">
+        SELECT USER_ID, ID, PW, NICKNAME, STACK_NAME, LOGIN_TYPE, AUTH_KEY
+        FROM USERS
+        WHERE ID = #{id,jdbcType=VARCHAR}
+    </select>
+</mapper>
