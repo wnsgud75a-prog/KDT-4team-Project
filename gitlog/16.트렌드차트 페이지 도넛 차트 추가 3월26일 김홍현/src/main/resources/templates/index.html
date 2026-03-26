@@ -1,0 +1,86 @@
+﻿<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrendBridge | 공고 보기</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body data-page="공고 보기">
+  <header class="site-header">
+    <div class="topbar">
+      <a class="brand" href="index.html">TrendBridge</a>
+      <nav class="nav">
+        <a href="index.html" data-page="jobs">공고 보기</a>
+        <a href="jobs.html" data-page="dashboard">트렌드 차트</a>
+        <a href="matching.html" data-page="matching">매칭 분석</a>
+        <a href="profile.html" data-page="profile">프로필</a>
+      </nav>
+      <div id="authArea" class="auth-area">
+        <!-- 로그인 안 했을 때 -->
+        <div th:if="${session.isLogin == null}">
+          <a class="auth-btn secondary" th:href="@{/login}">로그인</a>
+          <a class="auth-btn" th:href="@{/signup}">회원가입</a>
+        </div>
+
+        <!-- 로그인 했을 때 -->
+        <div th:if="${session.isLogin != null}">
+
+          <form action="/logout" method="post" style="display:inline;">
+            <button class="auth-btn secondary" type="submit">로그아웃</button>
+          </form>
+
+          <form action="/deleteuser" method="post" style="display:inline;">
+            <button class="auth-btn" type="button" onclick="deleteAccount(this)">회원탈퇴</button>
+          </form>
+
+          <script>
+            function deleteAccount(btn) {
+              if (!confirm("정말 탈퇴하시겠습니까?")) return;
+
+              const input = prompt("탈퇴를 진행하려면 '탈퇴합니다' 를 입력하세요");
+
+              if (input !== "탈퇴합니다") {
+                alert("입력이 올바르지 않습니다.");
+                return;
+              }
+
+              // 👉 버튼 기준으로 form 찾기
+              btn.closest("form").submit();
+            }
+          </script>
+
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>공고 보기</h1>
+      <p>특정 기술 스택 중심으로 공고를 빠르게 추려서 바로 탐색할 수 있습니다.</p>
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <h2>공고 필터링</h2>
+      <div class="row" style="margin-bottom:12px">
+        <input id="stackFilter" type="text" placeholder="예: React, Kafka" />
+        <select id="companyFilter"></select>
+      </div>
+      <div id="jobList" class="list"></div>
+      
+      <!-- 팀원1 테스트용 주석 -->
+    </section>
+  </main>
+</body>
+</html>
+
+
+
+
+
+
+

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.mvcgithublogin.repository.UserRepository">
+
+    <insert id="save" parameterType="com.project.mvcgithublogin.domain.User">
+        INSERT INTO USERS (USER_ID, ID, PW, NICKNAME, LOGIN_TYPE, AUTH_KEY)
+        VALUES (SEQ_USERS.NEXTVAL, #{id}, #{pw}, #{nickname}, #{loginType}, #{authKey})
+    </insert>
+
+    <resultMap id="userResultMap" type="com.project.mvcgithublogin.domain.User">
+        <id property="userId" column="USER_ID" jdbcType="BIGINT"/>
+        <result property="id" column="ID" jdbcType="VARCHAR"/>
+        <result property="pw" column="PW" jdbcType="VARCHAR"/>
+        <result property="nickname" column="NICKNAME" jdbcType="VARCHAR"/>
+        <result property="loginType" column="LOGIN_TYPE" jdbcType="VARCHAR"/>
+        <result property="authKey" column="AUTH_KEY" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="find" resultMap="userResultMap">
+        SELECT USER_ID, ID, PW, NICKNAME, LOGIN_TYPE, AUTH_KEY
+        FROM USERS
+        WHERE ID = #{id,jdbcType=VARCHAR} AND PW = #{pw,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="delete" >
+        DELETE USERS WHERE ID = #{id,jdbcType=VARCHAR}
+    </delete>
+</mapper>

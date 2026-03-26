@@ -1,0 +1,304 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrendBridge | 트렌드 차트</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body data-page="dashboard">
+<!-- 도넛 차트 관련 모듈 2종 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <header class="site-header">
+    <div class="topbar">
+      <a class="brand" href="index.html">TrendBridge</a>
+      <nav class="nav">
+        <a href="index.html" data-page="jobs">공고 보기</a>
+        <a href="jobs.html" data-page="dashboard">트렌드 차트</a>
+        <a href="matching.html" data-page="matching">매칭 분석</a>
+        <a href="profile.html" data-page="profile">프로필</a>
+      </nav>
+      <div id="authArea" class="auth-area"><a class="auth-btn secondary" href="login.html">로그인</a><a class="auth-btn" href="signup.html">회원가입</a></div>
+    </div>
+  </header>
+
+
+  <main class="container">
+
+    <section class="hero">
+      <h1>트렌드 차트</h1>
+      <p>DB 데이터를 기준으로 직무별 기술 스택 TOP10을 확인합니다.</p>
+    </section>
+
+    <section class="grid two" style="margin-top:18px;">
+
+      <!-- 트렌드 조회 -->
+      <div class="card">
+        <h2>트렌드 조회</h2>
+
+        <div class="row" style="margin-bottom: 10px;">
+
+          <!-- 카테고리 선택 -->
+          <div style="margin-bottom:10px;">
+
+            <a href="/jobs?cat=1">프론트엔드</a>
+            <a href="/jobs?cat=2">백엔드</a>
+            <a href="/jobs?cat=3">인공지능/데이터</a>
+            <a href="/jobs?cat=4">인프라/보안</a>
+            <a href="/jobs?cat=5">모바일</a>
+            <a href="/jobs?cat=6">기타</a>
+
+          </div>
+
+          <!-- 기존 유지 -->
+          <select id="trendPeriodSelect">
+            <option value="1주">최근 1주</option>
+            <option value="1개월">최근 1개월</option>
+          </select>
+
+        </div>
+
+        <!-- DB 데이터 출력 영역 -->
+        <div id="trendTop10List" class="list">
+
+          <div th:each="item : ${list}">
+
+            <!-- 한 줄 -->
+            <div class="row" style="justify-content: space-between;">
+              <span th:text="${item.stackname}" th:attr="onclick=|loadJobsByTech('${item.stackname}')|"></span>
+              <span th:text="${item.cnt}"></span>
+              <span th:text="${item.percent} + '%'"></span>
+            </div>
+
+            <!-- 막대 그래프 느낌 -->
+            <div style="background:#eee; height:6px; margin-bottom:10px;">
+              <div th:style="'width:' + ${item.percent} + '%; background:#4caf50; height:6px;'"></div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+      <!-- 보조 인사이트 -->
+      <div class="card">
+        <h2>카테고리 차트</h2>
+
+        <canvas id="categoryDonutChart" style="max-width:300px; margin:auto;"></canvas>
+
+      </div>
+
+
+    </section>
+
+    <section style="margin-top:30px;">
+      <div id="jobResultArea"></div>
+    </section>
+
+  </main>
+
+  <script th:inline="javascript">
+    // 기술별 차트
+    window.loadJobsByTech = function(stackname) {
+      const container = document.getElementById("jobResultArea");
+
+      container.innerHTML = "<p>로딩중...</p>";
+
+      fetch(`/jobs/by-tech?stackname=${encodeURIComponent(stackname)}&cat=${currentCategoryId}`)
+              .then(res => {
+                if (!res.ok) {
+                  throw new Error("서버 응답 오류: " + res.status);
+                }
+                return res.json();
+              })
+              .then(data => {
+                renderJobs(data, stackname);
+              })
+              .catch((e) => {
+                console.error("에러 내용:", e);
+                container.innerHTML = "<p>에러 발생</p>";
+              });
+    }
+
+    // 기술 스택 클릭 시 관련 공고 불러오기
+    const params = new URLSearchParams(window.location.search);
+    const currentCategoryId = parseInt(params.get("cat"));
+    const techCategoryMap = /*[[${techMap}]]*/ {};
+
+    console.log("techMap:", techCategoryMap);
+
+    function renderJobs(jobs, stackname) {
+      const container = document.getElementById("jobResultArea");
+
+      let html = `<h3>${stackname} 관련 공고</h3>`;
+
+      jobs.forEach(job => {
+
+        let techStacks = "-";
+
+        if (job.techStack) {
+          techStacks = job.techStack.split(",").map(s => {
+
+            const tech = s.trim();
+            const techCategory = techCategoryMap[tech];
+
+            const isSameCategory = techCategory === currentCategoryId; // ⭐ 핵심 수정
+
+            return `
+    <span style="
+      display:inline-block;
+      padding:4px 8px;
+      margin-right:6px;
+      border-radius:12px;
+      font-size:12px;
+      background:${isSameCategory ? '#4caf50' : '#e0e0e0'};
+      color:${isSameCategory ? '#fff' : '#333'};
+    ">
+      ${tech}
+    </span>
+  `;
+          }).join("");
+        }
+
+        const safeUrl = job.postingURL ? job.postingURL : "#";
+
+        html += `
+      <div class="card" style="margin-bottom:16px;">
+
+        <div style="font-size:13px; color:#666; margin-bottom:4px;">
+          ${job.companyName ?? "-"}
+        </div>
+
+        <div class="row" style="justify-content: space-between; align-items:flex-start;">
+
+          <div style="flex:2;">
+
+            <div style="font-size:18px; font-weight:bold; margin-bottom:6px;">
+              ${job.jobPosition ?? "-"}
+            </div>
+
+            <div style="margin-bottom:8px;">
+              ${techStacks}
+            </div>
+
+            <a href="${safeUrl}" target="_blank" class="auth-btn">
+              공고 바로가기
+            </a>
+
+          </div>
+
+          <div style="
+            flex:1;
+            font-size:13px;
+            padding-left:16px;
+            border-left:1px solid #ddd;
+            display:flex;
+            flex-wrap:wrap;
+          ">
+            <div style="width:50%; margin-bottom:4px;"><strong>연봉:</strong> ${job.salary ?? "-"}</div>
+            <div style="width:50%; margin-bottom:4px;"><strong>학력:</strong> ${job.education ?? "-"}</div>
+            <div style="width:50%; margin-bottom:4px;"><strong>근무지역:</strong> ${job.region ?? "-"}</div>
+            <div style="width:50%; margin-bottom:4px;"><strong>고용형태:</strong> ${job.employmentType ?? "-"}</div>
+            <div style="width:50%; margin-bottom:4px;"><strong>등록일:</strong> ${formatDate(job.postedDate)}</div>
+            <div style="width:50%; margin-bottom:4px;"><strong>마감일:</strong> ${formatDate(job.deadline)}</div>
+          </div>
+
+        </div>
+      </div>
+    `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return "-";
+      return dateStr.split(" ")[0];
+    }
+
+    // 카테고리 도넛 차트
+    const categoryData = /*[[${categoryList}]]*/ [];
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+      const labels = categoryData.map(item => item.stackname);
+      const values = categoryData.map(item => item.cnt);
+      const percents = categoryData.map(item => item.percent);
+
+      const ctx = document.getElementById('categoryDonutChart');
+
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: values,
+            backgroundColor: [
+              '#4caf50',
+              '#2196f3',
+              '#ff9800',
+              '#9c27b0',
+              '#f44336',
+              '#607d8b'
+            ]
+          }]
+        },
+
+        plugins: [ChartDataLabels],
+
+        options: {
+          responsive: true,
+
+          plugins: {
+            legend: {
+              position: 'bottom'
+            },
+
+            tooltip: {
+              enabled: false // hover 제거
+            },
+
+            datalabels: {
+              color: '#000',
+              font: {
+                weight: 'bold',
+                size: 12
+              },
+
+              formatter: function(value, context) {
+                const index = context.dataIndex;
+                const percent = percents[index];
+
+                return value + "건\n(" + percent + "%)";
+              }
+            }
+          },
+
+          // 클릭 이동 유지
+          onClick: (evt, elements) => {
+            if (elements.length > 0) {
+              const index = elements[0].index;
+              const categoryId = categoryData[index].categoryId;
+              location.href = `/jobs?cat=${categoryId}`;
+            }
+          }
+        }
+      });
+
+    });
+
+  </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
