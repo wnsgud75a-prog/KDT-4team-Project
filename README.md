@@ -2,7 +2,7 @@
 > **[박준형] 개인 포트폴리오용 저장소** (팀 프로젝트 기반)
 
 ## 👤 My Role & Contribution (나의 역할)
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white) 
 ![Spring Boot](https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
 **핵심 구현 사항:**
 - **소셜 로그인 시스템 구축**: Google 및 GitHub OAuth2 API를 연동하여 편의성 증대
