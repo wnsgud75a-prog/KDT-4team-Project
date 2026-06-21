@@ -1,0 +1,79 @@
+HELP.md
+
+### Gradle ###
+.gradle/
+.gradle-user-home*/
+build/
+out/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### Secrets and local env files ###
+.env
+**/.env
+*.env
+
+### Java ###
+*.class
+
+### Python virtual environments ###
+.venv/
+**/.venv/
+speech_analysis/.venv/
+_tmp_compare/
+
+### Python caches ###
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+### Python speech-analysis scratch outputs ###
+speech_analysis/_questions_for_test.tsv
+speech_analysis/_tester_results.json
+speech_analysis/*_noise.wav
+speech_analysis/*.log
+
+### Uploaded voice recordings 개인정보 제외 ###
+cognitive-voice/
+speech_analysis/uploads/
+speech_analysis/recordings/
+speech_analysis/audio/
+speech_analysis/tmp/
+speech_analysis/temp/
+
+### OS files ###
+.DS_Store
+Thumbs.db
